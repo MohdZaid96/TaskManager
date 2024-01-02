@@ -6,7 +6,7 @@ import axios from "axios"
 import { useEffect } from "react";
 
 const Navbar = () => {
-  const { logout,authState } = useContext(AuthContext);
+  const { logout,authState,setAuthState } = useContext(AuthContext);
   const [dropdown,setDropdown]=useState("pending");
   const [flag,setFlag]=useState(false);
   const [task,setTask]=useState("");
@@ -21,6 +21,7 @@ const Navbar = () => {
   };
   const handleAdd=async()=>{
       try {
+        console.log(authState)
         await axios.post(`${process.env.REACT_APP_API_URL}/create`,{
           name:authState.name,
           email:authState.email,
@@ -30,6 +31,10 @@ const Navbar = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem("token")}`
           }
+        })
+        setAuthState({
+          ...authState,
+          refresh:!authState.refresh,
         })
 
         console.log("task Added");
@@ -49,12 +54,12 @@ const Navbar = () => {
       }}
     >{authState.name?authState.name:"TaskManager"}
       <div id="inner">        
-        {authState.isAuth? <button onClick={logout}>logout</button>
-         && <button onClick={handleCreate}>
+        {authState.isAuth? <> <button onClick={logout}>logout</button>
+         <button onClick={handleCreate}>
           Create+
-        </button>  
+        </button> </> 
         :
-        <Link to={"/login"}>Login</Link> && <Link to={"/signup"}>Register</Link>
+        <><Link to={"/login"}>Login</Link> <Link to={"/signup"}>Register</Link></>
       }
         
         
@@ -64,13 +69,6 @@ const Navbar = () => {
       <input type="String" placeholder="Enter Task" onChange={(e)=>{
         setTask(e.target.value);
       }}></input>
-      
-      <select id="dropdown" value={dropdown} onChange={(e)=>{
-        setDropdown(e.target.value);
-      }}>
-          <option value="pending">Pending</option>
-          <option value="completed">Completed</option>
-      </select>
       <button onClick={()=>{
         setFlag(false)
       }}>Close</button>

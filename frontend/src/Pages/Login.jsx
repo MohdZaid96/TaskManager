@@ -17,19 +17,19 @@ const Login = () => {
           email,
           password
         })
-        console.log(res)
-        console.log(res.token)
-        localStorage.setItem("token",res.token)
+        console.log(res.data.token)
+        localStorage.setItem("token",res.data.token)
         console.log("Login Sucess")
         setAuthState({
           ...authState,
           isAuth:true,
-          name:res.name,
+          name:res.data.name,
           email
         })
         navigate('/');
 
       } catch (error) {
+
         console.log(error);
       }
         

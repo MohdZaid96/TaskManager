@@ -22,27 +22,30 @@ app.get("/",(req,res)=>{
     res.send("Base API");
 })
 const authentication=(req,res,next)=>{
-    const {token}=req.header.authorization?.split(" ")[1];
-    if(!token){
-        res.send({msg:"Token=> NOT FOUND"})
-    }else{
-        jwt.verify(token, process.env.SECRET_KEY, function(err, decoded) {
-            if(err){
-                res.send("Invalid Token");
-            }else{
-                req.user=decoded.user;
-                next();
-            }
-          });
-    }
+    const token = req.headers.authorization?.split(" ")[1];
+    console.log(token)
 
+        if(!token){
+            res.send("Login first")
+        }
+        else{
+            jwt.verify(token, process.env.SECRET_KEY, function(err, decoded){
+                if(err){
+                    res.send("Invalid Token");
+                }                 
+                else{
+                    req.user=decoded.user;
+                    next();
+                }
+            })
+        }
 }
 const authorization=(permittedRole)=>{
     return async (req,res,next)=>{
     const userId=req.user._id;
       const user=await UserModel.findOne({_id:userId});
       const userRole=user.role;
-      if(permittedRole.include(userRole)){
+      if(permittedRole.includes(userRole)){
             next();
       }else{
         res.send("Unauthorized Access");
@@ -95,7 +98,7 @@ app.post("/login",async (req,res)=>{
     }
 });
 
-app.post("/create",authentication,authorization(["user"]),async(req,res) => {
+app.post("/create",authentication,authorization(["user","admin"]),async(req,res) => {
         const {name,email,task}=req.body;
         try {
             const newTask=new TaskModel({
@@ -131,7 +134,7 @@ app.get("/tasks",authentication,authorization(["user","admin","manager"]),async(
         try {
             const tasks=await TaskModel.find();
             console.log("Tasks all fetched ");
-            res.send({msg:"Data fetched",data:tasks});
+            res.send({msg:"Data fetched",data:tasks,role:user.role});
         } catch (error) {
             console.log(error);
             res.send({msg:"Error fetching tasks"})
@@ -140,6 +143,7 @@ app.get("/tasks",authentication,authorization(["user","admin","manager"]),async(
 })
 
 app.put("/updateTask/:_id",authentication,authorization(["user","admin"]),async(req,res) => {
+    const _id=req.params._id
     try {
         await TaskModel.findOneAndUpdate({_id},
             req.body
