@@ -5,6 +5,8 @@ const {TaskModel}=require("./models/task.model");
 const cors=require("cors")
 const jwt=require("jsonwebtoken");
 const bcrypt=require("bcrypt");
+require('dotenv').config();
+
 
 
 const app=express();
@@ -24,7 +26,7 @@ const authentication=(req,res,next)=>{
     if(!token){
         res.send({msg:"Token=> NOT FOUND"})
     }else{
-        jwt.verify(token, 'zota', function(err, decoded) {
+        jwt.verify(token, process.env.SECRET_KEY, function(err, decoded) {
             if(err){
                 res.send("Invalid Token");
             }else{
@@ -50,8 +52,8 @@ const authorization=(permittedRole)=>{
 }
 
 
-app.get("/signup",async (req,res)=>{
-    const {email,password,name,role}=req.body;
+app.post("/signup",async (req,res)=>{
+    const {email,password,name}=req.body;
 
     await bcrypt.hash(password, 2, async function(err, hash) {
         if(err){
@@ -60,14 +62,13 @@ app.get("/signup",async (req,res)=>{
         const user=new UserModel({
             email,
             password:hash,
-            name,
-            role
+            name
         })
        try {
         await user.save();
-        var token = jwt.sign({userId:user._id}, 'zota');
+       
         console.log("SignUp sucess")
-        res.send({msg:"SignUp sucess",token})
+        res.send({msg:"SignUp sucess"})
        } catch (error) {
             console.log(error);
             res.send(error)
@@ -75,17 +76,17 @@ app.get("/signup",async (req,res)=>{
     })
 }); 
 
-app.get("/login",authentication,async (req,res)=>{
+app.post("/login",async (req,res)=>{
     const {email,password}=req.body;
     const user=await UserModel.findOne({email});
     if(user){
         const hashed=user.password;
         bcrypt.compare(password, hashed, function(err, result) {
-            if(error){
+            if(err){
                 res.send("Login Failed")
             }else{
-                const token = jwt.sign({user}, "zota")
-                res.send({msg:"Login Succesful",token})
+                const token = jwt.sign({user}, process.env.SECRET_KEY)
+                res.send({msg:"Login Succesful",token,name:user.name})
 
             }
         })

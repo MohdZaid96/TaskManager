@@ -5,7 +5,9 @@ const iniAuth={
     isAuth : false,
     admin:false,
     manager:false,
-    create:false
+    create:false,
+    email:"",
+    name:""
 }
 
 export const AuthContext=createContext();
