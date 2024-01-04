@@ -37,7 +37,7 @@ const Login = () => {
 
   return (
     <div>Login
-      <input type="text" placeholder='Email' required onChange={(e)=>{
+      <input type="email" placeholder='Email' required onChange={(e)=>{
         setEmail(e.target.value)
       }}/>
       <input type="password" placeholder='Password' required onChange={(e)=>{

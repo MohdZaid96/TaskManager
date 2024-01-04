@@ -20,6 +20,7 @@ const Navbar = () => {
     setFlag(true) 
   };
   const handleAdd=async()=>{
+
       try {
         console.log(authState)
         await axios.post(`${process.env.REACT_APP_API_URL}/create`,{
@@ -34,8 +35,9 @@ const Navbar = () => {
         })
         setAuthState({
           ...authState,
-          refresh:!authState.refresh,
+          displayTask:!authState.displayTask,
         })
+        setFlag(!flag)
 
         console.log("task Added");
       } catch (error) {

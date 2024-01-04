@@ -118,7 +118,7 @@ app.post("/create",authentication,authorization(["user","admin"]),async(req,res)
 })
 app.get("/tasks",authentication,authorization(["user","admin","manager"]),async(req,res) => {
     const user=req.user;
-    if(user.role == "student"){
+    if(user.role == "user"){
         try {
             const tasks=await TaskModel.find({email : user.email});
             console.log("Tasks fetched for student");

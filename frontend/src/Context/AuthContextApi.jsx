@@ -3,6 +3,7 @@ import { createContext } from 'react';
 
 const iniAuth={
     isAuth : false,
+    displayTask:false,
     email:"",
     name:""
 }

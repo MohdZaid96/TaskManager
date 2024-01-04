@@ -43,7 +43,7 @@ const Home = () => {
       })
       console.log(res.msg)
       setDropdown(val);
-      setFlag(!flag);
+      setFlag(!flag); 
       console.log("Updation completed")
       
     } catch (error) {
@@ -52,7 +52,7 @@ const Home = () => {
   }
   useEffect(()=>{
     handledata();
-  },[flag])
+  },[flag,authState.displayTask])
   
   return (
     <div id="tasks">
