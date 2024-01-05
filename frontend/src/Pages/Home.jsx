@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import axios from "axios"
 
 const Home = () => {
-  const {authState}=useContext(AuthContext);
+  const {authState,setAuthState}=useContext(AuthContext);
   const [data,setData]=useState([]);
   var [role,setRole]=useState("");
   const [dropdown,setDropdown]=useState("");
@@ -31,6 +31,27 @@ const Home = () => {
     
 
   }
+  const handledelete=async (_id) =>{
+  try {
+     console.log(await axios.delete(`${process.env.REACT_APP_API_URL}/delete/${_id}`,{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`
+      }
+    })) 
+    console.log("Deleted Task");
+    setAuthState({
+      ...authState,
+      displayTask:!authState.displayTask
+    })
+    
+
+  } catch (error) {
+    console.log(error);
+  }
+
+  }
+
   const handleDropdown=async (val,_id)=>{
     try {
       const res=await axios.put(`${process.env.REACT_APP_API_URL}/updateTask/${_id}`,{
@@ -77,6 +98,10 @@ const Home = () => {
               <option value="pending">Pending</option>
               <option value="completed">Completed</option>
           </select>
+          {role == 'admin' && <button onClick={()=>{
+            handledelete(ele._id)
+          }}>Delete</button>}
+
           </td>
           </tr>))}
         </tbody>

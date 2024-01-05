@@ -9,8 +9,9 @@ const Navbar = () => {
   const { logout,authState,setAuthState } = useContext(AuthContext);
   const [dropdown,setDropdown]=useState("pending");
   const [flag,setFlag]=useState(false);
-  const [task,setTask]=useState("");
+  const [task,setTask]=useState(false);
   const [render,setRender]=useState(false);
+
 
   useEffect(()=>{
     setRender(!render);
@@ -21,28 +22,35 @@ const Navbar = () => {
   };
   const handleAdd=async()=>{
 
-      try {
-        console.log(authState)
-        await axios.post(`${process.env.REACT_APP_API_URL}/create`,{
-          name:authState.name,
-          email:authState.email,
-          task
-        },{
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem("token")}`
-          }
-        })
-        setAuthState({
-          ...authState,
-          displayTask:!authState.displayTask,
-        })
-        setFlag(!flag)
-
-        console.log("task Added");
-      } catch (error) {
-        console.log("Add Failed || Error:"+error)
+      if(task){
+        try {
+          console.log(authState)
+          await axios.post(`${process.env.REACT_APP_API_URL}/create`,{
+            name:authState.name,
+            email:authState.email,
+            task
+          },{
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          setAuthState({
+            ...authState,
+            displayTask:!authState.displayTask,
+          })
+          setFlag(!flag)
+          setTask(false);
+  
+          console.log("task Added");
+        } catch (error) {
+          console.log("Add Failed || Error:"+error)
+        }
+      }else{
+        alert("Task field is empty");
       }
+
+      
         
   }
 

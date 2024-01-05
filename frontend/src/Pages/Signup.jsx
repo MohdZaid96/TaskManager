@@ -4,6 +4,7 @@ import axios from "axios"
 import {useNavigate} from "react-router-dom";
 import { useContext } from 'react';
 import { AuthContext } from '../Context/AuthContextApi'
+import { emailReg } from "../Components/emailReg";
 
 
 const Signup = () => {const {authState,setAuthState}=useContext(AuthContext)
@@ -16,9 +17,9 @@ const [validEmail,setValidEmail]=useState(true);
 
 const navigate=useNavigate();
 const handleSignup=async()=>{
-    const emailRegex=/^[a-zA-Z0-9.!#%&]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]{2,8}$/
+    // const emailRegex=/^[a-zA-Z0-9.!#%&]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]{2,8}$/
 
-    if(emailRegex.test(email)){
+    if(emailReg.test(email)){
       setValidEmail(true);
       try {
         if(password===password2){

@@ -4,6 +4,8 @@ import axios from "axios"
 import {useNavigate} from "react-router-dom";
 import { useContext } from 'react';
 import { AuthContext } from '../Context/AuthContextApi';
+import { emailReg } from "../Components/emailReg";
+
 
 
 const Login = () => {
@@ -12,7 +14,8 @@ const Login = () => {
   const [password,setPassword]=useState("");
   const navigate=useNavigate();
   const handleLogin=async()=>{
-      try {
+      if(emailReg.test(email)){
+        try {
           const res=await axios.post(`${process.env.REACT_APP_API_URL}/login`,{
           email,
           password
@@ -32,7 +35,10 @@ const Login = () => {
 
         console.log(error);
       }
-        
+}else{
+        alert("Invalid Email");
+      }
+             
   }
 
   return (

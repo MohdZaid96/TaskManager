@@ -21,9 +21,11 @@ export const AuthContextApi=({children})=>{
         })
     }
     const logout=()=>{
+        localStorage.clear();
         setAuthState({
             ...authState,
-            isAuth:false
+            isAuth:false,
+            name:false
             
         })
     }
