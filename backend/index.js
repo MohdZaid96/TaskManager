@@ -46,20 +46,7 @@ const authentication=(req,res,next)=>{
             })
         }
 }
-const authorization=(permittedRole)=>{
-    return async (req,res,next)=>{
-    const userId=req.user._id;
-      const user=await UserModel.findOne({_id:userId});
-      const userRole=user.role;
-      if(permittedRole.includes(userRole)){
-            next();
-      }else{
-        logger.error("Unauthorized Access");
-        res.send("Unauthorized Access");
-      }
-    }
 
-}
 app.use(limiter);
 
 app.post("/signup",async (req,res)=>{
@@ -109,13 +96,14 @@ app.post("/login",async (req,res)=>{
     }
 });
 
-app.post("/create",authentication,authorization(["user","admin"]),async(req,res) => {
-        const {name,email,task}=req.body;
+app.post("/create",authentication,async(req,res) => {
+        const {name,email,task,desc}=req.body;
         try {
             const newTask=new TaskModel({
                 name,
                 email,
-                task
+                task,
+                desc
             })
 
             await newTask.save();
@@ -148,7 +136,7 @@ app.delete("/delete/:_id",authentication,async(req,res) => {
 
 })
 
-app.get("/tasks",authentication,authorization(["user","admin","manager"]),async(req,res) => {
+app.get("/tasks",authentication,async(req,res) => {
     const user=req.user;
     if(user.role == "user"){
         try {
@@ -178,7 +166,7 @@ app.get("/tasks",authentication,authorization(["user","admin","manager"]),async(
     } 
 })
 
-app.put("/updateTask/:_id",authentication,authorization(["user","admin"]),async(req,res) => {
+app.put("/updateTask/:_id",authentication,async(req,res) => {
     const _id=req.params._id
     try {
         await TaskModel.findOneAndUpdate({_id},
@@ -191,23 +179,6 @@ app.put("/updateTask/:_id",authentication,authorization(["user","admin"]),async(
         //console.log("Task Update Failed")
         logger.error(error);
         res.send(error);
-    }
-   
-
-})
-
-app.put("/updateRole/:_id",authentication,authorization(["admin"]),async(req,res) => {
-    try {
-        await UserModel.findOneAndUpdate({_id},
-            req.body
-        );
-        console.log("Task Updated")
-        logger.info("Task Updated");
-        res.send({msg:"Task Updated"})
-    } catch (error) {
-        console.log("Task Update Failed")
-        logger.error(error)
-        res.send(error)
     }
    
 

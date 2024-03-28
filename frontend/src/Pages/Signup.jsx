@@ -48,7 +48,10 @@ const handleSignup=async()=>{
 }
 
 return (
-  <div>Signup
+  <div style={{display:"flex",alignItems:"center",justifyContent:"center",width:"100%",height:"70vh"}}>
+  
+  <div id='loginDiv' style={{display:"flex",flexDirection:"column",alignItems:"center",margin:"auto",backgroundColor: "#0d6efd",borderRadius:"20px"}}>
+    <h1>SignUp</h1>
     <input type="text" placeholder='Name' required onChange={(e)=>{
       setName(e.target.value)
     }}/>
@@ -77,6 +80,7 @@ return (
       setPassword2(e.target.value)
     }}/>
     <button onClick={handleSignup}>Signup</button>
+  </div>
   </div>
 )
 }

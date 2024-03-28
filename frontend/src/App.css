@@ -1,3 +1,70 @@
+/* Login */
+
+#loginDiv > *{
+  margin: 20px;
+  border-radius: 10px;
+  border: 1px solid white;
+  color:white;
+  background-color: #0d6efd;
+  
+}
+#loginDiv >input::placeholder {
+  /* Your styles here */
+  color: white; /* For example, make the placeholder text red */
+   /* For example, italicize the placeholder text */
+}
+#loginDiv >button:hover {
+  /* Your styles here */
+  border-color: #212121; /* For example, make the placeholder text red */
+   /* For example, italicize the placeholder text */
+}
+#loginDiv >input:hover {
+  /* Your styles here */
+  border-color: #212121; /* For example, make the placeholder text red */
+   /* For example, italicize the placeholder text */
+}
+/* Navbar */
+
+#navbar{
+  margin-left: 10px;
+    margin-right: 10px;
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color:white;
+    background-color: #0d6efd;
+
+}
+#navbar >button:hover {
+  /* Your styles here */
+  background-color: #212121;
+  color: #212121; /* For example, make the placeholder text red */
+   /* For example, italicize the placeholder text */
+}
+#navbar >input:hover {
+  /* Your styles here */
+  background-color: #212121;
+  color: #212121; /* For example, make the placeholder text red */
+   /* For example, italicize the placeholder text */
+}
+
+/* Home */
+
+#home {
+  display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    
+}
+#home > div{
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+
 .App {
   text-align: center;
 }

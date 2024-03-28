@@ -42,7 +42,9 @@ const Login = () => {
   }
 
   return (
-    <div>Login
+    <div style={{display:"flex",alignItems:"center",justifyContent:"center",width:"100%",height:"70vh"}}>
+    <div id='loginDiv' style={{display:"flex",flexDirection:"column",alignItems:"center",margin:"auto",backgroundColor: "#0d6efd",borderRadius:"20px"}}>
+    <h1>Login</h1>
       <input type="email" placeholder='Email' required onChange={(e)=>{
         setEmail(e.target.value)
       }}/>
@@ -50,6 +52,7 @@ const Login = () => {
         setPassword(e.target.value)
       }}/>
       <button onClick={handleLogin}>Login</button>
+    </div>
     </div>
   )
 }
